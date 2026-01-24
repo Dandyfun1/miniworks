@@ -5,7 +5,7 @@
   <title>SchoolHub</title>
   <link rel="stylesheet" href="style.css">
 
-  <!-- Firebase (MODULE) -->
+  <!-- Firebase -->
   <script type="module" src="script.js"></script>
 </head>
 <body>
@@ -18,27 +18,50 @@
   <button id="enterBtn">Enter</button>
 </div>
 
-<!-- ICON BAR -->
-<div id="iconBar" class="hidden">
-  <div class="icon" id="weatherIcon">🌦</div>
-  <div class="icon" id="calendarIcon">📅</div>
+<!-- TOP BAR -->
+<div id="topBar" class="hidden">
+  <span id="welcomeText"></span>
+  <span id="clock"></span>
+  
+  <div id="icons">
+    <div class="icon" id="weatherIcon">🌦</div>
+    <div class="icon" id="calendarIcon">📅</div>
+    <div class="icon" id="settingsIcon">⚙️</div>
+  </div>
+</div>
+
+<!-- MAIN FEED -->
+<div id="feed" class="hidden">
 </div>
 
 <!-- WEATHER POPUP -->
 <div id="weather" class="popup hidden draggable">
-  <div class="popupHeader">Weather</div>
-  <iframe
-    src="https://www.meteoblue.com/en/weather/widget/daily/vitoria-gasteiz_spain_3104499?days=3&tempunit=C"
-    loading="lazy">
-  </iframe>
+  <div class="popupHeader">Weather · Vitoria-Gasteiz</div>
+  <iframe src="https://www.meteoblue.com/en/weather/widget/daily/vitoria-gasteiz_spain_3104499?geoloc=fixed&days=5&tempunit=C&windunit=kmh&layout=dark" loading="lazy"></iframe>
 </div>
 
 <!-- CALENDAR POPUP -->
 <div id="calendar" class="popup hidden draggable">
   <div class="popupHeader">Shared Calendar</div>
-  <input id="noteInput" placeholder="Add note">
+  <input id="noteInput" placeholder="Add note/event">
   <button id="addNoteBtn">Add</button>
   <ul id="notes"></ul>
+</div>
+
+<!-- USER SETTINGS POPUP -->
+<div id="userSettings" class="popup hidden draggable">
+  <div class="popupHeader">Settings</div>
+  <p>Background image or GIF URL:</p>
+  <input id="bgInput" placeholder="Paste URL here">
+  <button id="saveBgBtn">Save</button>
+</div>
+
+<!-- POST UPLOAD POPUP -->
+<div id="uploadPopup" class="popup hidden draggable">
+  <div class="popupHeader">New Post</div>
+  <textarea id="postText" placeholder="Post text"></textarea>
+  <input id="postUrl" placeholder="YouTube, image, or doc link">
+  <button id="uploadPostBtn">Upload</button>
 </div>
 
 </body>
