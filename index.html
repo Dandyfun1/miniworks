@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SchoolHub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <h1>SchoolHub</h1>
+  <p>Enter your name to continue</p>
+  <input id="usernameInput" placeholder="Your name">
+  <button onclick="enterSite()">Enter</button>
+</div>
+
+<!-- TOP LEFT WIDGETS -->
+<div id="widgets" class="hidden">
+
+  <div class="widget" id="clock">--:--</div>
+
+  <div class="widget">
+    <iframe
+      src="https://www.meteoblue.com/en/weather/widget/daily/vitoria-gasteiz_spain_3104499?geoloc=fixed&days=3&tempunit=C&windunit=kmh"
+      frameborder="0"
+      scrolling="NO">
+    </iframe>
+  </div>
+
+  <div class="widget">
+    <!-- REPLACE YOUR_CALENDAR_ID -->
+    <iframe
+      src="https://calendar.google.com/calendar/embed?src=YOUR_CALENDAR_ID&ctz=Europe%2FMadrid"
+      frameborder="0"
+      scrolling="no">
+    </iframe>
+  </div>
+
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="hidden">
+
+  <header>
+    <h2 id="welcomeText"></h2>
+    <div id="globalSettings">⚙️</div>
+  </header>
+
+  <main id="feed">
+    <div class="post">
+      <h3>Welcome to SchoolHub 🎉</h3>
+      <p>Share links, videos, documents and ideas.</p>
+
+      <iframe
+        width="100%"
+        height="315"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </main>
+
+  <!-- USER SETTINGS -->
+  <div id="userSettings" class="hidden">
+    <h3>Your Settings</h3>
+    <input id="bgInput" placeholder="Background image or GIF URL">
+    <button onclick="saveBackground()">Save</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
