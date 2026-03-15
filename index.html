@@ -1,93 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Personal Dashboard</title>
+
+<title>Smart Dashboard</title>
+
 <link rel="stylesheet" href="style.css">
+
+<link rel="manifest" href="manifest.json">
+
 </head>
 
 <body>
 
 <header>
-<h1>My Dashboard</h1>
 
-<div class="controls">
-<button id="themeToggle">🌙 / ☀️</button>
+<h1>Smart Dashboard</h1>
+
+<div class="top-controls">
+
+<button id="themeToggle">Toggle Theme</button>
+
+<label class="upload-bg">
+Background
 <input type="file" id="bgUpload" accept="image/*">
+</label>
+
 </div>
+
 </header>
 
-<main>
+<div class="grid" id="widgetGrid">
 
-<div class="top-widgets">
+<div class="widget draggable" id="clockWidget">
 
-<div class="widget" id="clockIcon">🕒 Clock</div>
-<div class="widget" id="calendarIcon">📅 Calendar</div>
-<div class="widget" id="weatherIcon">🌦 Weather</div>
+<h3>Clock</h3>
 
-</div>
-
-<div class="file-section">
-
-<h2>File Upload & Preview</h2>
-
-<input type="file" id="fileUpload" multiple>
-
-<div id="filePreview"></div>
-
-<div class="gdocs">
-<h3>Add Google Doc / Slides link</h3>
-<input type="text" id="gdocLink" placeholder="Paste Google Docs / Slides link">
-<button id="addGdoc">Add</button>
-<div id="gdocContainer"></div>
-</div>
-
-</div>
-
-</main>
-
-<!-- CLOCK POPUP -->
-
-<div class="popup" id="clockPopup">
-
-<h2>Clock</h2>
+<canvas id="clockCanvas" width="200" height="200"></canvas>
 
 <div id="digitalClock"></div>
 
-<canvas id="analogClock" width="200" height="200"></canvas>
+</div>
 
-<button class="close">Close</button>
+<div class="widget draggable" id="weatherWidget">
+
+<h3>Weather</h3>
+
+<div id="weather"></div>
 
 </div>
 
-<!-- CALENDAR POPUP -->
+<div class="widget draggable" id="calendarWidget">
 
-<div class="popup" id="calendarPopup">
+<h3>Calendar</h3>
 
-<h2>Calendar</h2>
+<div class="calendar-controls">
+
+<button id="prevMonth">◀</button>
+
+<span id="monthYear"></span>
+
+<button id="nextMonth">▶</button>
+
+</div>
 
 <div id="calendar"></div>
 
 <input type="date" id="eventDate">
-<input type="text" id="eventText" placeholder="Event name">
+<input type="text" id="eventText" placeholder="Event">
+
 <button id="addEvent">Add Event</button>
 
 <ul id="eventList"></ul>
 
-<button class="close">Close</button>
-
 </div>
 
-<!-- WEATHER POPUP -->
+<div class="widget draggable fileWidget">
 
-<div class="popup" id="weatherPopup">
+<h3>Files</h3>
 
-<h2>Weather - Vitoria-Gasteiz</h2>
+<div id="dropZone">Drag files here</div>
 
-<div id="weather"></div>
+<input type="file" id="fileInput" multiple>
 
-<button class="close">Close</button>
+<div id="filePreview"></div>
+
+<h4>Add Google Doc / Slides</h4>
+
+<input id="docLink" placeholder="Paste link">
+
+<button id="addDoc">Add</button>
+
+<div id="docViewer"></div>
+
+</div>
 
 </div>
 
