@@ -10,58 +10,37 @@
 
 <link rel="stylesheet" href="style.css">
 
-<link rel="manifest" href="manifest.json">
-
 </head>
 
 <body>
 
 <header>
 
-<h1>Smart Dashboard</h1>
+<h1>Dashboard</h1>
 
-<div class="controls">
+<div class="topButtons">
 
-<button id="themeToggle">🌙 / ☀️</button>
-
-<label class="bgBtn">
-Background
-<input type="file" id="bgUpload" accept="image/*">
-</label>
+<button id="openCalendar">Calendar</button>
+<button id="openFiles">Files</button>
+<button id="openSettings">Settings</button>
 
 </div>
 
 </header>
 
-<main class="grid">
+<div id="clock">
 
-<!-- CLOCK -->
-
-<section class="widget">
-
-<h2>Clock</h2>
-
-<canvas id="clockCanvas" width="200" height="200"></canvas>
+<canvas id="clockCanvas" width="220" height="220"></canvas>
 
 <div id="digitalClock"></div>
 
-</section>
+</div>
 
-<!-- WEATHER -->
+<!-- CALENDAR WINDOW -->
 
-<section class="widget">
+<div class="window" id="calendarWindow">
 
-<h2>Weather</h2>
-
-<div id="weather"></div>
-
-</section>
-
-<!-- CALENDAR -->
-
-<section class="widget">
-
-<h2>Calendar</h2>
+<div class="titleBar">Calendar</div>
 
 <div class="calendarNav">
 
@@ -81,17 +60,17 @@ Background
 
 <input type="text" id="eventText" placeholder="Event name">
 
-<button id="addEvent">Add Event</button>
+<button id="addEvent">Add</button>
 
 </div>
 
-</section>
+</div>
 
 <!-- FILE MANAGER -->
 
-<section class="widget fileManager">
+<div class="window" id="fileWindow">
 
-<h2>File Manager</h2>
+<div class="titleBar">File Manager</div>
 
 <div id="dropZone">Drop files here</div>
 
@@ -99,17 +78,31 @@ Background
 
 <div id="filePreview"></div>
 
-<h3>Add Document Link</h3>
+<h3>Add document link</h3>
 
-<input id="docLink" placeholder="Paste Google / Office link">
+<input id="docLink" placeholder="Paste Google or Office link">
 
 <button id="addDoc">Add</button>
 
 <div id="docViewer"></div>
 
-</section>
+</div>
 
-</main>
+<!-- SETTINGS -->
+
+<div class="window" id="settingsWindow">
+
+<div class="titleBar">Settings</div>
+
+<h3>Theme</h3>
+
+<button id="themeToggle">Toggle Dark / Light</button>
+
+<h3>Background</h3>
+
+<input type="file" id="bgUpload" accept="image/*">
+
+</div>
 
 <script src="script.js"></script>
 
