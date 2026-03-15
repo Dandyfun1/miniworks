@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Smart Dashboard</title>
+<title>Personal Dashboard</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -17,13 +18,13 @@
 
 <header>
 
-<h1>Smart Dashboard</h1>
+<h1>Personal Dashboard</h1>
 
-<div class="top-controls">
+<div class="controls">
 
 <button id="themeToggle">Toggle Theme</button>
 
-<label class="upload-bg">
+<label class="bgUpload">
 Background
 <input type="file" id="bgUpload" accept="image/*">
 </label>
@@ -32,31 +33,37 @@ Background
 
 </header>
 
-<div class="grid" id="widgetGrid">
+<main class="grid">
 
-<div class="widget draggable" id="clockWidget">
+<!-- CLOCK -->
 
-<h3>Clock</h3>
+<section class="widget">
+
+<h2>Clock</h2>
 
 <canvas id="clockCanvas" width="200" height="200"></canvas>
 
 <div id="digitalClock"></div>
 
-</div>
+</section>
 
-<div class="widget draggable" id="weatherWidget">
+<!-- WEATHER -->
 
-<h3>Weather</h3>
+<section class="widget">
+
+<h2>Weather</h2>
 
 <div id="weather"></div>
 
-</div>
+</section>
 
-<div class="widget draggable" id="calendarWidget">
+<!-- CALENDAR -->
 
-<h3>Calendar</h3>
+<section class="widget">
 
-<div class="calendar-controls">
+<h2>Calendar</h2>
+
+<div class="calendarNav">
 
 <button id="prevMonth">◀</button>
 
@@ -69,35 +76,36 @@ Background
 <div id="calendar"></div>
 
 <input type="date" id="eventDate">
-<input type="text" id="eventText" placeholder="Event">
+
+<input type="text" id="eventText" placeholder="Event name">
 
 <button id="addEvent">Add Event</button>
 
-<ul id="eventList"></ul>
+</section>
 
-</div>
+<!-- FILE MANAGER -->
 
-<div class="widget draggable fileWidget">
+<section class="widget">
 
-<h3>Files</h3>
+<h2>Files</h2>
 
 <div id="dropZone">Drag files here</div>
 
-<input type="file" id="fileInput" multiple>
+<input type="file" id="fileUpload" multiple>
 
 <div id="filePreview"></div>
 
-<h4>Add Google Doc / Slides</h4>
+<h3>Add Google Doc / Slides</h3>
 
-<input id="docLink" placeholder="Paste link">
+<input type="text" id="docLink" placeholder="Paste link">
 
 <button id="addDoc">Add</button>
 
 <div id="docViewer"></div>
 
-</div>
+</section>
 
-</div>
+</main>
 
 <script src="script.js"></script>
 
