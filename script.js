@@ -1,143 +1,126 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-
-/* =========================
-   FIREBASE CONFIG
-========================= */
-const firebaseConfig = {
-  apiKey: "AIzaSyDhOR8ONBR3Tt01tY05Uxx6TZVXS-uJsOs",
-  authDomain: "shoolpub.firebaseapp.com",
-  projectId: "shoolpub",
-  storageBucket: "shoolpub.firebasestorage.app",
-  messagingSenderId: "906607131740",
-  appId: "1:906607131740:web:16385bcd22a40501b7fa99"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-/* =========================
-   LOGIN
-========================= */
-const loginScreen = document.getElementById("loginScreen");
-const topBar = document.getElementById("topBar");
-const feed = document.getElementById("feed");
-const welcomeText = document.getElementById("welcomeText");
-
-document.getElementById("enterBtn").onclick = () => {
-  const name = document.getElementById("usernameInput").value.trim();
-  if (!name) return alert("Enter your name");
-  localStorage.setItem("username", name);
-
-  loginScreen.style.display = "none";
-  topBar.classList.remove("hidden");
-  feed.classList.remove("hidden");
-  welcomeText.textContent = `Hi, ${name}`;
-
-  // Load user background
-  const bg = localStorage.getItem(name+"_bg");
-  if(bg) document.body.style.backgroundImage = `url(${bg})`;
-};
-
-/* =========================
-   CLOCK
-========================= */
-function updateClock(){
-  const now = new Date();
-  document.getElementById("clock").textContent = now.toLocaleTimeString("es-ES", {timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit"});
-}
-setInterval(updateClock,1000);
-updateClock();
-
-/* =========================
-   ICON TOGGLES
-========================= */
-document.getElementById("weatherIcon").onclick = () =>
-  document.getElementById("weather").classList.toggle("hidden");
-
-document.getElementById("calendarIcon").onclick = () =>
-  document.getElementById("calendar").classList.toggle("hidden");
-
-/* SETTINGS ICON (hover 3s) */
-let hoverTimer;
-const settingsIcon = document.getElementById("settingsIcon");
-const userSettings = document.getElementById("userSettings");
-
-settingsIcon.addEventListener("mouseenter",()=>{hoverTimer=setTimeout(()=>{userSettings.classList.toggle("hidden")},3000);});
-settingsIcon.addEventListener("mouseleave",()=>{clearTimeout(hoverTimer);});
-
-/* SAVE BACKGROUND */
-document.getElementById("saveBgBtn").onclick = ()=>{
-  const url = document.getElementById("bgInput").value.trim();
-  if(!url) return;
-  const user = localStorage.getItem("username");
-  localStorage.setItem(user+"_bg",url);
-  document.body.style.backgroundImage=`url(${url})`;
-};
-
-/* =========================
-   SHARED CALENDAR
-========================= */
-const notesRef = collection(db,"calendar");
-const notesList = document.getElementById("notes");
-
-document.getElementById("addNoteBtn").onclick = async()=>{
-  const text = document.getElementById("noteInput").value.trim();
-  if(!text) return;
-  await addDoc(notesRef,{text,user:localStorage.getItem("username"),time:Date.now()});
-  document.getElementById("noteInput").value="";
-};
-
-onSnapshot(query(notesRef,orderBy("time")),snap=>{
-  notesList.innerHTML="";
-  snap.forEach(doc=>{
-    const li=document.createElement("li");
-    li.textContent=`${doc.data().user}: ${doc.data().text}`;
-    notesList.appendChild(li);
-  });
+// --- Theme & Background ---
+const themeToggle = document.getElementById('theme-toggle');
+themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    themeToggle.innerHTML = newTheme === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
 });
 
-/* =========================
-   POST FEED (Videos/Images/Docs)
-========================= */
-const postsRef = collection(db,"posts");
-
-document.getElementById("uploadPostBtn")?.addEventListener("click",async()=>{
-  const text = document.getElementById("postText").value.trim();
-  const url = document.getElementById("postUrl").value.trim();
-  if(!text && !url) return alert("Enter text or link");
-  await addDoc(postsRef,{text,url,user:localStorage.getItem("username"),time:Date.now()});
-  document.getElementById("postText").value="";
-  document.getElementById("postUrl").value="";
-});
-
-onSnapshot(query(postsRef,orderBy("time")),(snap)=>{
-  feed.innerHTML="";
-  snap.forEach(doc=>{
-    const div=document.createElement("div");
-    div.className="post";
-    const data=doc.data();
-    div.innerHTML=`<b>${data.user}:</b> ${data.text || ""}`;
-    if(data.url){
-      if(data.url.includes("youtube.com") || data.url.includes("youtu.be")){
-        div.innerHTML+=`<iframe width="100%" height="200" src="${data.url.replace("watch?v=","embed/")}" frameborder="0" allowfullscreen></iframe>`;
-      } else if(data.url.match(/\.(jpg|jpeg|png|gif)$/i)){
-        div.innerHTML+=`<img src="${data.url}" style="width:100%;margin-top:5px;border-radius:8px;">`;
-      } else {
-        div.innerHTML+=`<a href="${data.url}" target="_blank" style="color:#0af;display:block;margin-top:5px;">Open file</a>`;
-      }
+document.getElementById('bg-upload').addEventListener('change', function(e) {
+    const reader = new FileReader();
+    reader.onload = function() {
+        document.body.style.backgroundImage = `url(${reader.result})`;
+        localStorage.setItem('user-bg', reader.result);
     }
-    feed.appendChild(div);
-  });
+    reader.readAsDataURL(e.target.files[0]);
 });
 
-/* =========================
-   DRAGGABLE WINDOWS
-========================= */
-document.querySelectorAll(".popup").forEach(popup=>{
-  const header=popup.querySelector(".popupHeader");
-  let dragging=false,x,y;
-  header.onmousedown=e=>{dragging=true;x=e.clientX-popup.offsetLeft;y=e.clientY-popup.offsetTop;};
-  document.onmouseup=()=>dragging=false;
-  document.onmousemove=e=>{if(!dragging)return;popup.style.left=e.clientX-x+"px";popup.style.top=e.clientY-y+"px";};
+// Load saved BG
+if(localStorage.getItem('user-bg')) {
+    document.body.style.backgroundImage = `url(${localStorage.getItem('user-bg')})`;
+}
+
+// --- Modal Logic ---
+const overlay = document.getElementById('modal-overlay');
+const content = document.getElementById('modal-content');
+
+function openModal(templateId) {
+    const temp = document.getElementById(templateId).content.cloneNode(true);
+    content.innerHTML = '';
+    content.appendChild(temp);
+    overlay.classList.remove('modal-hide');
+    if(templateId === 'temp-clock') startClock();
+    if(templateId === 'temp-calendar') renderCalendar();
+}
+
+document.querySelectorAll('.icon-btn').forEach(btn => {
+    btn.onclick = () => openModal(btn.id.replace('open-', 'temp-'));
+});
+
+overlay.onclick = (e) => { if(e.target === overlay || e.target.className === 'close-modal') overlay.classList.add('modal-hide'); };
+
+// --- Clock ---
+function startClock() {
+    setInterval(() => {
+        const now = new Date();
+        const hr = now.getHours();
+        const min = now.getMinutes();
+        const sec = now.getSeconds();
+        
+        document.getElementById('hour').style.transform = `rotate(${30 * hr + min / 2}deg)`;
+        document.getElementById('minute').style.transform = `rotate(${6 * min}deg)`;
+        document.getElementById('second').style.transform = `rotate(${6 * sec}deg)`;
+        
+        const digital = document.getElementById('digital-time');
+        if(digital) digital.innerText = now.toLocaleTimeString();
+    }, 1000);
+}
+
+// --- Calendar & Events ---
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+let selectedDateStr = null;
+let events = JSON.parse(localStorage.getItem('cal-events')) || {};
+
+function renderCalendar() {
+    const daysContainer = document.getElementById('calendar-days');
+    const monthDisplay = document.getElementById('month-display');
+    daysContainer.innerHTML = '';
+    
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    
+    monthDisplay.innerText = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date(currentYear, currentMonth));
+
+    for (let i = 0; i < firstDay; i++) daysContainer.appendChild(document.createElement('div'));
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dayEl = document.createElement('div');
+        dayEl.className = 'day';
+        const dateStr = `${currentYear}-${currentMonth}-${d}`;
+        if(events[dateStr]) dayEl.classList.add('has-event');
+        dayEl.innerText = d;
+        dayEl.onclick = () => {
+            selectedDateStr = dateStr;
+            document.querySelectorAll('.day').forEach(el => el.classList.remove('selected-day'));
+            dayEl.classList.add('selected-day');
+        };
+        daysContainer.appendChild(dayEl);
+    }
+}
+
+function saveEvent() {
+    const text = document.getElementById('event-text').value;
+    if(!selectedDateStr) return alert("Select a day first!");
+    events[selectedDateStr] = text;
+    localStorage.setItem('cal-events', JSON.stringify(events));
+    renderCalendar();
+}
+
+// --- File & Google Docs Management ---
+function addGoogleDoc() {
+    const url = document.getElementById('gdoc-link').value;
+    if(!url.includes('docs.google.com')) return alert("Invalid Google Link");
+    
+    // Convert sharing link to preview link
+    let previewUrl = url.replace(/\/edit.*$/, '/preview');
+    addFileCard(previewUrl, "Google Doc/Slide", true);
+}
+
+function addFileCard(src, name, isIframe = false) {
+    const grid = document.getElementById('file-list');
+    const card = document.createElement('div');
+    card.className = 'file-card';
+    card.innerHTML = isIframe 
+        ? `<iframe></iframe><p>${name}</p>` 
+        : `<i class="fas fa-file-alt fa-3x"></i><p>${name}</p>`;
+    if(isIframe) card.querySelector('iframe').src = src;
+    grid.appendChild(card);
+}
+
+document.getElementById('file-input').addEventListener('change', (e) => {
+    Array.from(e.target.files).forEach(file => {
+        addFileCard("", file.name, false);
+    });
 });
