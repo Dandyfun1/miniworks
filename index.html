@@ -1,110 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Smart Dashboard</title>
-
+<title>Ultimate Dashboard</title>
 <link rel="stylesheet" href="style.css">
-
 </head>
-
 <body>
 
 <header>
-
-<h1>Dashboard</h1>
-
+<h1>Ultimate Dashboard</h1>
 <div class="topButtons">
-
 <button id="openCalendar">Calendar</button>
 <button id="openFiles">Files</button>
+<button id="openNotes">Notes</button>
+<button id="openAI">AI Assistant</button>
 <button id="openSettings">Settings</button>
-
 </div>
-
 </header>
 
 <div id="clock">
-
 <canvas id="clockCanvas" width="220" height="220"></canvas>
-
 <div id="digitalClock"></div>
-
 </div>
 
 <!-- CALENDAR WINDOW -->
-
 <div class="window" id="calendarWindow">
-
 <div class="titleBar">Calendar</div>
-
 <div class="calendarNav">
-
 <button id="prevMonth">◀</button>
-
 <span id="monthYear"></span>
-
 <button id="nextMonth">▶</button>
-
 </div>
-
 <div id="calendar"></div>
-
 <div class="eventPanel">
-
 <input type="date" id="eventDate">
-
 <input type="text" id="eventText" placeholder="Event name">
-
 <button id="addEvent">Add</button>
-
+</div>
 </div>
 
-</div>
-
-<!-- FILE MANAGER -->
-
+<!-- FILE WINDOW -->
 <div class="window" id="fileWindow">
-
-<div class="titleBar">File Manager</div>
-
+<div class="titleBar">File Explorer</div>
 <div id="dropZone">Drop files here</div>
-
 <input type="file" id="fileUpload" multiple>
-
 <div id="filePreview"></div>
-
 <h3>Add document link</h3>
-
-<input id="docLink" placeholder="Paste Google or Office link">
-
+<input id="docLink" placeholder="Paste Google/Office link">
 <button id="addDoc">Add</button>
-
 <div id="docViewer"></div>
-
 </div>
 
-<!-- SETTINGS -->
+<!-- NOTES WINDOW -->
+<div class="window" id="notesWindow">
+<div class="titleBar">Notes / Tasks</div>
+<textarea id="noteText" placeholder="Write your notes/tasks..."></textarea>
+<button id="saveNote">Save Note</button>
+<div id="noteList"></div>
+</div>
 
+<!-- AI ASSISTANT WINDOW -->
+<div class="window" id="aiWindow">
+<div class="titleBar">AI Assistant</div>
+<div id="aiChat"></div>
+<input type="text" id="aiInput" placeholder="Ask something...">
+<button id="sendAI">Send</button>
+</div>
+
+<!-- SETTINGS WINDOW -->
 <div class="window" id="settingsWindow">
-
 <div class="titleBar">Settings</div>
-
 <h3>Theme</h3>
-
-<button id="themeToggle">Toggle Dark / Light</button>
-
+<button id="themeToggle">Toggle Dark/Light</button>
 <h3>Background</h3>
-
 <input type="file" id="bgUpload" accept="image/*">
+</div>
 
+<!-- Dock -->
+<div id="dock">
+<button id="dockCalendar">Calendar</button>
+<button id="dockFiles">Files</button>
+<button id="dockNotes">Notes</button>
+<button id="dockAI">AI Assistant</button>
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
