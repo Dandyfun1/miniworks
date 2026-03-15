@@ -3,13 +3,11 @@ body{
 margin:0;
 font-family:system-ui;
 
-background-size:cover;
-background-position:center;
-
 background:#0f172a;
 color:white;
 
-transition:0.3s;
+background-size:cover;
+background-position:center;
 
 }
 
@@ -18,84 +16,77 @@ header{
 display:flex;
 justify-content:space-between;
 
-padding:18px 40px;
+padding:20px 40px;
 
-background:rgba(0,0,0,0.4);
-
-backdrop-filter:blur(8px);
+background:rgba(0,0,0,0.3);
 
 }
 
-.controls{
+.topButtons{
 
 display:flex;
-gap:12px;
+gap:10px;
 
 }
 
-.grid{
+button{
 
-display:grid;
+padding:6px 12px;
 
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+border:none;
+border-radius:6px;
 
-gap:20px;
+cursor:pointer;
 
-padding:30px;
+background:#38bdf8;
+color:white;
 
 }
 
-.widget{
+#clock{
+
+text-align:center;
+margin-top:40px;
+
+}
+
+#digitalClock{
+
+font-size:30px;
+margin-top:10px;
+
+}
+
+/* WINDOWS */
+
+.window{
+
+position:absolute;
+
+top:120px;
+left:100px;
+
+width:400px;
 
 background:rgba(255,255,255,0.08);
 
 backdrop-filter:blur(14px);
 
-border-radius:16px;
+border-radius:12px;
 
-padding:20px;
+padding:15px;
 
-box-shadow:0 8px 30px rgba(0,0,0,0.4);
-
-}
-
-.widget h2{
-
-margin-top:0;
+display:none;
 
 }
 
-/* CLOCK */
+.titleBar{
 
-#digitalClock{
+font-weight:bold;
 
-font-size:30px;
-text-align:center;
-margin-top:10px;
+margin-bottom:10px;
 
-}
-
-/* WEATHER */
-
-#weather{
-
-display:grid;
-
-grid-template-columns:repeat(7,1fr);
-
-gap:8px;
-
-}
-
-.weatherDay{
-
-background:rgba(255,255,255,0.1);
-
-padding:10px;
-
-border-radius:8px;
-
-text-align:center;
+cursor:move;
 
 }
 
@@ -105,6 +96,7 @@ text-align:center;
 
 display:flex;
 justify-content:space-between;
+
 margin-bottom:10px;
 
 }
@@ -112,28 +104,22 @@ margin-bottom:10px;
 #calendar{
 
 display:grid;
+
 grid-template-columns:repeat(7,1fr);
+
 gap:6px;
 
 }
 
 .day{
 
-padding:10px;
+padding:8px;
 
-border-radius:8px;
+border-radius:6px;
 
 background:rgba(255,255,255,0.1);
 
 text-align:center;
-
-cursor:pointer;
-
-}
-
-.day.today{
-
-border:2px solid #38bdf8;
 
 }
 
@@ -144,9 +130,15 @@ color:black;
 
 }
 
+.day.today{
+
+border:2px solid #38bdf8;
+
+}
+
 .eventPanel{
 
-margin-top:12px;
+margin-top:10px;
 display:flex;
 gap:6px;
 
@@ -154,17 +146,11 @@ gap:6px;
 
 /* FILE MANAGER */
 
-.fileManager{
-
-grid-column:span 2;
-
-}
-
 #dropZone{
 
 border:2px dashed rgba(255,255,255,0.4);
 
-padding:30px;
+padding:20px;
 
 text-align:center;
 
@@ -180,7 +166,7 @@ display:grid;
 
 grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
 
-gap:12px;
+gap:10px;
 
 margin-top:10px;
 
@@ -192,7 +178,7 @@ background:rgba(255,255,255,0.1);
 
 padding:10px;
 
-border-radius:10px;
+border-radius:8px;
 
 text-align:center;
 
@@ -201,34 +187,13 @@ text-align:center;
 .fileCard img{
 
 max-width:100%;
+
 border-radius:6px;
-
-}
-
-.fileCard button{
-
-margin-top:5px;
-
-}
-
-input,button{
-
-border:none;
-border-radius:6px;
-
-padding:6px;
-
-}
-
-button{
-
-cursor:pointer;
-background:#38bdf8;
-color:white;
 
 }
 
 .dark{
 
 background:#111;
+
 }
