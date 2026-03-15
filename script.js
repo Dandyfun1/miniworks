@@ -3,17 +3,16 @@ function toggleWindow(id){
   const win=document.getElementById(id);
   win.style.display= win.style.display==="block"? "none":"block";
 }
+
 document.getElementById("openCalendar").onclick=()=>toggleWindow("calendarWindow");
 document.getElementById("openFiles").onclick=()=>toggleWindow("fileWindow");
 document.getElementById("openNotes").onclick=()=>toggleWindow("notesWindow");
-document.getElementById("openAI").onclick=()=>toggleWindow("aiWindow");
 document.getElementById("openSettings").onclick=()=>toggleWindow("settingsWindow");
 
 // Dock buttons
 document.getElementById("dockCalendar").onclick=()=>toggleWindow("calendarWindow");
 document.getElementById("dockFiles").onclick=()=>toggleWindow("fileWindow");
 document.getElementById("dockNotes").onclick=()=>toggleWindow("notesWindow");
-document.getElementById("dockAI").onclick=()=>toggleWindow("aiWindow");
 
 // Drag windows
 document.querySelectorAll(".window").forEach(win=>{
@@ -36,8 +35,10 @@ function updateClock(){
   document.getElementById("digitalClock").textContent=now.toLocaleTimeString();
 }
 setInterval(updateClock,1000);
+
 const canvas=document.getElementById("clockCanvas");
 const ctx=canvas.getContext("2d");
+
 function drawClock(){
   const now=new Date();
   const sec=now.getSeconds(), min=now.getMinutes(), hr=now.getHours();
@@ -48,15 +49,14 @@ function drawClock(){
     ctx.lineTo(110+length*Math.sin(angle),110-length*Math.cos(angle));
     ctx.stroke();
   }
-  hand(hr*Math.PI/6,60);
-  hand(min*Math.PI/30,80);
-  hand(sec*Math.PI/30,90);
+  hand(hr*Math.PI/6,60); hand(min*Math.PI/30,80); hand(sec*Math.PI/30,90);
 }
 setInterval(drawClock,1000);
 
 // ===== Calendar =====
 let current=new Date();
 let events=JSON.parse(localStorage.getItem("events")||"{}");
+
 function renderCalendar(){
   const cal=document.getElementById("calendar");
   cal.innerHTML="";
@@ -75,6 +75,7 @@ function renderCalendar(){
   }
 }
 renderCalendar();
+
 document.getElementById("prevMonth").onclick=()=>{current.setMonth(current.getMonth()-1); renderCalendar();}
 document.getElementById("nextMonth").onclick=()=>{current.setMonth(current.getMonth()+1); renderCalendar();}
 document.getElementById("addEvent").onclick=()=>{
@@ -127,17 +128,6 @@ document.getElementById("saveNote").onclick=()=>{
   if(noteText.value){notes.push(noteText.value); noteText.value=""; saveNotes();}
 }
 renderNotes();
-
-// ===== AI Assistant Placeholder =====
-const aiChat=document.getElementById("aiChat");
-document.getElementById("sendAI").onclick=()=>{
-  const msg=document.getElementById("aiInput").value;
-  if(!msg) return;
-  const p=document.createElement("p"); p.textContent="You: "+msg; aiChat.appendChild(p);
-  const resp=document.createElement("p"); resp.textContent="AI: [This is a placeholder response]"; aiChat.appendChild(resp);
-  document.getElementById("aiInput").value="";
-  aiChat.scrollTop=aiChat.scrollHeight;
-}
 
 // ===== Settings =====
 document.getElementById("themeToggle").onclick=()=>{document.body.classList.toggle("dark");}
