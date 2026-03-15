@@ -4,9 +4,9 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Personal Dashboard</title>
+<title>Smart Dashboard</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -18,13 +18,13 @@
 
 <header>
 
-<h1>Personal Dashboard</h1>
+<h1>Smart Dashboard</h1>
 
 <div class="controls">
 
-<button id="themeToggle">Toggle Theme</button>
+<button id="themeToggle">🌙 / ☀️</button>
 
-<label class="bgUpload">
+<label class="bgBtn">
 Background
 <input type="file" id="bgUpload" accept="image/*">
 </label>
@@ -75,29 +75,33 @@ Background
 
 <div id="calendar"></div>
 
+<div class="eventPanel">
+
 <input type="date" id="eventDate">
 
 <input type="text" id="eventText" placeholder="Event name">
 
 <button id="addEvent">Add Event</button>
 
+</div>
+
 </section>
 
 <!-- FILE MANAGER -->
 
-<section class="widget">
+<section class="widget fileManager">
 
-<h2>Files</h2>
+<h2>File Manager</h2>
 
-<div id="dropZone">Drag files here</div>
+<div id="dropZone">Drop files here</div>
 
 <input type="file" id="fileUpload" multiple>
 
 <div id="filePreview"></div>
 
-<h3>Add Google Doc / Slides</h3>
+<h3>Add Document Link</h3>
 
-<input type="text" id="docLink" placeholder="Paste link">
+<input id="docLink" placeholder="Paste Google / Office link">
 
 <button id="addDoc">Add</button>
 
