@@ -1,28 +1,35 @@
 body{
 
 margin:0;
+
 font-family:system-ui;
-transition:0.3s;
 
 background-size:cover;
+
 background-position:center;
+
+transition:0.3s;
 
 }
 
 header{
 
 display:flex;
+
 justify-content:space-between;
+
 padding:15px 30px;
 
 background:rgba(0,0,0,0.5);
+
 color:white;
 
 }
 
-.top-controls{
+.controls{
 
 display:flex;
+
 gap:10px;
 
 }
@@ -31,7 +38,7 @@ gap:10px;
 
 display:grid;
 
-grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
 
 gap:20px;
 
@@ -45,9 +52,9 @@ background:rgba(255,255,255,0.15);
 
 backdrop-filter:blur(10px);
 
-border-radius:15px;
-
 padding:20px;
+
+border-radius:12px;
 
 box-shadow:0 5px 20px rgba(0,0,0,0.2);
 
@@ -56,6 +63,7 @@ box-shadow:0 5px 20px rgba(0,0,0,0.2);
 .dark{
 
 background:#111;
+
 color:white;
 
 }
@@ -66,17 +74,12 @@ background:rgba(30,30,30,0.7);
 
 }
 
-#clockCanvas{
-
-display:block;
-margin:auto;
-
-}
-
 #digitalClock{
 
+font-size:30px;
+
 text-align:center;
-font-size:28px;
+
 margin-top:10px;
 
 }
@@ -95,16 +98,27 @@ margin-top:10px;
 
 .day{
 
-padding:8px;
-border-radius:6px;
 background:#eee;
+
+padding:8px;
+
 text-align:center;
+
+border-radius:6px;
 
 }
 
 .day.event{
 
 background:#ffc107;
+
+}
+
+.calendarNav{
+
+display:flex;
+
+justify-content:space-between;
 
 }
 
@@ -120,24 +134,14 @@ margin-bottom:10px;
 
 }
 
-#filePreview iframe,
-#filePreview img{
+#filePreview img,
+#filePreview iframe{
 
 max-width:250px;
+
 margin:10px;
 
-}
-
-.calendar-controls{
-
-display:flex;
-justify-content:space-between;
-
-}
-
-.draggable{
-
-cursor:move;
+display:block;
 
 }
 
@@ -149,16 +153,28 @@ grid-template-columns:repeat(7,1fr);
 
 gap:5px;
 
-text-align:center;
-
 }
 
 .weatherDay{
 
 background:rgba(255,255,255,0.2);
 
-padding:5px;
+padding:6px;
+
+text-align:center;
 
 border-radius:6px;
+
+}
+
+button{
+
+cursor:pointer;
+
+padding:5px 10px;
+
+border:none;
+
+border-radius:5px;
 
 }
