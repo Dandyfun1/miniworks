@@ -1,126 +1,122 @@
-// --- Theme & Background ---
+// --- 1. THEME & BACKGROUND ---
 const themeToggle = document.getElementById('theme-toggle');
-themeToggle.addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    themeToggle.innerHTML = newTheme === 'light' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-});
+themeToggle.onclick = () => {
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+    themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+};
 
-document.getElementById('bg-upload').addEventListener('change', function(e) {
+document.getElementById('bg-upload').onchange = (e) => {
+    const file = e.target.files[0];
     const reader = new FileReader();
-    reader.onload = function() {
-        document.body.style.backgroundImage = `url(${reader.result})`;
-        localStorage.setItem('user-bg', reader.result);
-    }
-    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = (res) => {
+        document.getElementById('bg-layer').style.backgroundImage = `url(${res.target.result})`;
+        localStorage.setItem('user-bg', res.target.result);
+    };
+    reader.readAsDataURL(file);
+};
+
+// --- 2. POPUP CONTROLS ---
+function togglePopup(id) {
+    const el = document.getElementById(id);
+    const isOpened = el.style.display === 'block';
+    document.querySelectorAll('.popup').forEach(p => p.style.display = 'none');
+    el.style.display = isOpened ? 'none' : 'block';
+}
+
+// --- 3. DRAG & DROP + FILE MANAGEMENT ---
+const dropZone = document.getElementById('drop-zone');
+const hiddenInput = document.getElementById('file-input-hidden');
+
+dropZone.onclick = () => hiddenInput.click();
+
+['dragover', 'dragleave', 'drop'].forEach(evt => {
+    dropZone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        if(evt === 'dragover') dropZone.classList.add('active');
+        else dropZone.classList.remove('active');
+        if(evt === 'drop') handleFiles(e.dataTransfer.files);
+    });
 });
 
-// Load saved BG
-if(localStorage.getItem('user-bg')) {
-    document.body.style.backgroundImage = `url(${localStorage.getItem('user-bg')})`;
+hiddenInput.onchange = (e) => handleFiles(e.target.files);
+
+function handleFiles(files) {
+    Array.from(files).forEach(file => {
+        addFileToGrid("", file.name, false);
+    });
 }
 
-// --- Modal Logic ---
-const overlay = document.getElementById('modal-overlay');
-const content = document.getElementById('modal-content');
-
-function openModal(templateId) {
-    const temp = document.getElementById(templateId).content.cloneNode(true);
-    content.innerHTML = '';
-    content.appendChild(temp);
-    overlay.classList.remove('modal-hide');
-    if(templateId === 'temp-clock') startClock();
-    if(templateId === 'temp-calendar') renderCalendar();
+function addGoogleAsset() {
+    const url = document.getElementById('glink').value;
+    if(!url.includes('docs.google.com')) return alert("Please enter a valid Google Docs link.");
+    const preview = url.replace(/\/edit.*$/, "/preview");
+    addFileToGrid(preview, "Google Resource", true);
 }
 
-document.querySelectorAll('.icon-btn').forEach(btn => {
-    btn.onclick = () => openModal(btn.id.replace('open-', 'temp-'));
-});
-
-overlay.onclick = (e) => { if(e.target === overlay || e.target.className === 'close-modal') overlay.classList.add('modal-hide'); };
-
-// --- Clock ---
-function startClock() {
-    setInterval(() => {
-        const now = new Date();
-        const hr = now.getHours();
-        const min = now.getMinutes();
-        const sec = now.getSeconds();
-        
-        document.getElementById('hour').style.transform = `rotate(${30 * hr + min / 2}deg)`;
-        document.getElementById('minute').style.transform = `rotate(${6 * min}deg)`;
-        document.getElementById('second').style.transform = `rotate(${6 * sec}deg)`;
-        
-        const digital = document.getElementById('digital-time');
-        if(digital) digital.innerText = now.toLocaleTimeString();
-    }, 1000);
+function addFileToGrid(src, name, isIframe) {
+    const grid = document.getElementById('file-grid');
+    const div = document.createElement('div');
+    div.className = 'file-item';
+    div.innerHTML = isIframe 
+        ? `<iframe src="${src}"></iframe><p>${name}</p>` 
+        : `<div style="font-size:3rem; padding:20px;"><i class="fas fa-file-lines"></i></div><p>${name}</p>`;
+    grid.appendChild(div);
 }
 
-// --- Calendar & Events ---
-let currentMonth = new Date().getMonth();
-let currentYear = new Date().getFullYear();
-let selectedDateStr = null;
-let events = JSON.parse(localStorage.getItem('cal-events')) || {};
+// --- 4. ANALOG CLOCK ---
+setInterval(() => {
+    const d = new Date();
+    const hr = d.getHours();
+    const min = d.getMinutes();
+    const sec = d.getSeconds();
+    document.getElementById('hour-hand').style.transform = `rotate(${30 * hr + min/2}deg)`;
+    document.getElementById('min-hand').style.transform = `rotate(${6 * min}deg)`;
+    document.getElementById('sec-hand').style.transform = `rotate(${6 * sec}deg)`;
+    document.getElementById('digital-clock').innerText = d.toLocaleTimeString();
+}, 1000);
+
+// --- 5. CALENDAR & EVENTS ---
+let calDate = new Date();
+let events = JSON.parse(localStorage.getItem('user-events') || '{}');
+let selectedKey = null;
 
 function renderCalendar() {
-    const daysContainer = document.getElementById('calendar-days');
-    const monthDisplay = document.getElementById('month-display');
-    daysContainer.innerHTML = '';
-    
-    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    
-    monthDisplay.innerText = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date(currentYear, currentMonth));
+    const grid = document.getElementById('calendar-days');
+    const monthLabel = document.getElementById('month-name');
+    grid.innerHTML = "";
+    monthLabel.innerText = calDate.toLocaleString('default', { month: 'long', year: 'numeric' });
 
-    for (let i = 0; i < firstDay; i++) daysContainer.appendChild(document.createElement('div'));
+    const first = new Date(calDate.getFullYear(), calDate.getMonth(), 1).getDay();
+    const last = new Date(calDate.getFullYear(), calDate.getMonth() + 1, 0).getDate();
 
-    for (let d = 1; d <= daysInMonth; d++) {
-        const dayEl = document.createElement('div');
-        dayEl.className = 'day';
-        const dateStr = `${currentYear}-${currentMonth}-${d}`;
-        if(events[dateStr]) dayEl.classList.add('has-event');
-        dayEl.innerText = d;
-        dayEl.onclick = () => {
-            selectedDateStr = dateStr;
-            document.querySelectorAll('.day').forEach(el => el.classList.remove('selected-day'));
-            dayEl.classList.add('selected-day');
+    for(let i=0; i<first; i++) grid.appendChild(document.createElement('div'));
+    for(let d=1; d<=last; d++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'day';
+        const key = `${calDate.getFullYear()}-${calDate.getMonth()}-${d}`;
+        if(events[key]) dayDiv.classList.add('has-event');
+        dayDiv.innerText = d;
+        dayDiv.onclick = () => {
+            selectedKey = key;
+            document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+            dayDiv.classList.add('selected');
         };
-        daysContainer.appendChild(dayEl);
+        grid.appendChild(dayDiv);
     }
 }
 
+function moveMonth(dir) { calDate.setMonth(calDate.getMonth() + dir); renderCalendar(); }
 function saveEvent() {
-    const text = document.getElementById('event-text').value;
-    if(!selectedDateStr) return alert("Select a day first!");
-    events[selectedDateStr] = text;
-    localStorage.setItem('cal-events', JSON.stringify(events));
+    if(!selectedKey) return alert("Select a date first!");
+    const txt = document.getElementById('event-input').value;
+    events[selectedKey] = txt;
+    localStorage.setItem('user-events', JSON.stringify(events));
     renderCalendar();
 }
 
-// --- File & Google Docs Management ---
-function addGoogleDoc() {
-    const url = document.getElementById('gdoc-link').value;
-    if(!url.includes('docs.google.com')) return alert("Invalid Google Link");
-    
-    // Convert sharing link to preview link
-    let previewUrl = url.replace(/\/edit.*$/, '/preview');
-    addFileCard(previewUrl, "Google Doc/Slide", true);
+// Initial Load
+renderCalendar();
+if(localStorage.getItem('user-bg')) {
+    document.getElementById('bg-layer').style.backgroundImage = `url(${localStorage.getItem('user-bg')})`;
 }
-
-function addFileCard(src, name, isIframe = false) {
-    const grid = document.getElementById('file-list');
-    const card = document.createElement('div');
-    card.className = 'file-card';
-    card.innerHTML = isIframe 
-        ? `<iframe></iframe><p>${name}</p>` 
-        : `<i class="fas fa-file-alt fa-3x"></i><p>${name}</p>`;
-    if(isIframe) card.querySelector('iframe').src = src;
-    grid.appendChild(card);
-}
-
-document.getElementById('file-input').addEventListener('change', (e) => {
-    Array.from(e.target.files).forEach(file => {
-        addFileCard("", file.name, false);
-    });
-});
