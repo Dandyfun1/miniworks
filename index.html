@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Working Dashboard</title>
+<title>Functional Dashboard</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,10 +11,9 @@
 <header>
   <h1>Dashboard</h1>
   <div class="topButtons">
-    <button id="openCalendar">Calendar</button>
-    <button id="openFiles">Files</button>
-    <button id="openNotes">Notes</button>
-    <button id="openSettings">Settings</button>
+    <button id="btnCalendar">Calendar</button>
+    <button id="btnNotes">Notes</button>
+    <button id="btnSettings">Settings</button>
   </div>
 </header>
 
@@ -39,18 +38,6 @@
   </div>
 </div>
 
-<!-- File Manager Window -->
-<div class="window" id="fileWindow">
-  <div class="titleBar">File Manager</div>
-  <div id="dropZone">Drop files here</div>
-  <input type="file" id="fileUpload" multiple>
-  <div id="filePreview"></div>
-  <h3>Add Document Link</h3>
-  <input type="text" id="docLink" placeholder="Paste Google/Office link">
-  <button id="addDoc">Add</button>
-  <div id="docViewer"></div>
-</div>
-
 <!-- Notes Window -->
 <div class="window" id="notesWindow">
   <div class="titleBar">Notes / Tasks</div>
@@ -71,7 +58,6 @@
 <!-- Dock -->
 <div id="dock">
   <button id="dockCalendar">Calendar</button>
-  <button id="dockFiles">Files</button>
   <button id="dockNotes">Notes</button>
   <button id="dockSettings">Settings</button>
 </div>
