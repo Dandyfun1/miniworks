@@ -4,13 +4,11 @@ function toggleWindow(id){
   win.style.display = (win.style.display === "block") ? "none" : "block";
 }
 
-document.getElementById("openCalendar").onclick = () => toggleWindow("calendarWindow");
-document.getElementById("openFiles").onclick = () => toggleWindow("fileWindow");
-document.getElementById("openNotes").onclick = () => toggleWindow("notesWindow");
-document.getElementById("openSettings").onclick = () => toggleWindow("settingsWindow");
+document.getElementById("btnCalendar").onclick = () => toggleWindow("calendarWindow");
+document.getElementById("btnNotes").onclick = () => toggleWindow("notesWindow");
+document.getElementById("btnSettings").onclick = () => toggleWindow("settingsWindow");
 
 document.getElementById("dockCalendar").onclick = () => toggleWindow("calendarWindow");
-document.getElementById("dockFiles").onclick = () => toggleWindow("fileWindow");
 document.getElementById("dockNotes").onclick = () => toggleWindow("notesWindow");
 document.getElementById("dockSettings").onclick = () => toggleWindow("settingsWindow");
 
@@ -38,7 +36,6 @@ setInterval(updateClock, 1000);
 
 const canvas = document.getElementById("clockCanvas");
 const ctx = canvas.getContext("2d");
-
 function drawClock(){
   const now = new Date();
   const sec = now.getSeconds(), min = now.getMinutes(), hr = now.getHours();
@@ -87,32 +84,10 @@ document.getElementById("addEvent").onclick = () => {
   renderCalendar();
 }
 
-// ===== File Manager =====
-const preview = document.getElementById("filePreview");
-function addFileCard(name,url,type){
-  const card = document.createElement("div"); card.className="fileCard";
-  if(type.startsWith("image")) card.innerHTML=`<img src="${url}"><p>${name}</p>`;
-  else card.innerHTML=`<p>📄</p><p>${name}</p>`;
-  const btn = document.createElement("button"); btn.textContent="Open"; btn.onclick=()=>window.open(url);
-  card.appendChild(btn); preview.appendChild(card);
-}
-function handleFiles(files){ for(let file of files){ addFileCard(file.name,URL.createObjectURL(file),file.type); } }
-document.getElementById("fileUpload").onchange = e => handleFiles(e.target.files);
-const dropZone = document.getElementById("dropZone");
-dropZone.ondragover = e => e.preventDefault();
-dropZone.ondrop = e => { e.preventDefault(); handleFiles(e.dataTransfer.files); }
-
-// Document links
-document.getElementById("addDoc").onclick = () => {
-  const link = document.getElementById("docLink").value; if(!link) return;
-  const iframe = document.createElement("iframe"); iframe.src=link; iframe.width="100%"; iframe.height="300";
-  document.getElementById("docViewer").appendChild(iframe);
-}
-
 // ===== Notes =====
+let notes = JSON.parse(localStorage.getItem("notes") || "[]");
 const noteText = document.getElementById("noteText");
 const noteList = document.getElementById("noteList");
-let notes = JSON.parse(localStorage.getItem("notes") || "[]");
 
 function renderNotes(){
   noteList.innerHTML="";
@@ -123,6 +98,7 @@ function renderNotes(){
   });
 }
 function saveNotes(){ localStorage.setItem("notes",JSON.stringify(notes)); renderNotes(); }
+
 document.getElementById("saveNote").onclick = () => {
   if(noteText.value){ notes.push(noteText.value); noteText.value=""; saveNotes(); }
 }
@@ -131,7 +107,8 @@ renderNotes();
 // ===== Settings =====
 document.getElementById("themeToggle").onclick = () => document.body.classList.toggle("dark");
 document.getElementById("bgUpload").onchange = e => {
-  const file = e.target.files[0]; const reader = new FileReader();
+  const file = e.target.files[0];
+  const reader = new FileReader();
   reader.onload = () => document.body.style.backgroundImage = `url(${reader.result})`;
   reader.readAsDataURL(file);
 }
