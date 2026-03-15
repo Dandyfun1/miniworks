@@ -1,82 +1,97 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Glass Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Dashboard</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div id="bg-layer"></div>
 
-    <!-- Header / Settings -->
-    <header class="glass-nav">
-        <div class="brand">MY DASHBOARD</div>
-        <div class="nav-controls">
-            <button id="theme-toggle" class="control-btn"><i class="fas fa-moon"></i></button>
-            <label for="bg-upload" class="control-btn"><i class="fas fa-image"></i></button>
-            <input type="file" id="bg-upload" accept="image/*" hidden>
-        </div>
-    </header>
+<header>
+<h1>My Dashboard</h1>
 
-    <!-- Main Workspace -->
-    <main class="dashboard-main">
-        <section class="file-manager glass-card">
-            <h2><i class="fas fa-folder-tree"></i> File Manager</h2>
-            
-            <div id="drop-zone" class="drop-area">
-                <i class="fas fa-cloud-upload-alt fa-3x"></i>
-                <p>Drag & Drop local files here or <span>Browse</span></p>
-                <input type="file" id="file-input-hidden" multiple hidden>
-            </div>
+<div class="controls">
+<button id="themeToggle">🌙 / ☀️</button>
+<input type="file" id="bgUpload" accept="image/*">
+</div>
+</header>
 
-            <div class="google-tools">
-                <input type="text" id="glink" placeholder="Paste Google Doc/Slide link...">
-                <button onclick="addGoogleAsset()">Add Asset</button>
-            </div>
+<main>
 
-            <div id="file-grid" class="file-display-grid"></div>
-        </section>
-    </main>
+<div class="top-widgets">
 
-    <!-- Floating Dock -->
-    <div class="floating-dock">
-        <div class="dock-icon" onclick="togglePopup('clock-pop')"><i class="fas fa-clock"></i></div>
-        <div class="dock-icon" onclick="togglePopup('cal-pop')"><i class="fas fa-calendar-days"></i></div>
-        <div class="dock-icon" onclick="togglePopup('weather-pop')"><i class="fas fa-cloud-sun"></i></div>
-    </div>
+<div class="widget" id="clockIcon">🕒 Clock</div>
+<div class="widget" id="calendarIcon">📅 Calendar</div>
+<div class="widget" id="weatherIcon">🌦 Weather</div>
 
-    <!-- Widget Popups -->
-    <div id="clock-pop" class="popup glass-card">
-        <div class="popup-header"><span>Analog Clock</span><button class="close-btn" onclick="togglePopup('clock-pop')">&times;</button></div>
-        <div class="analog-clock">
-            <div class="hand hr" id="hour-hand"></div>
-            <div class="hand min" id="min-hand"></div>
-            <div class="hand sec" id="sec-hand"></div>
-        </div>
-        <div id="digital-clock">00:00:00</div>
-    </div>
+</div>
 
-    <div id="cal-pop" class="popup glass-card">
-        <div class="popup-header"><span>Calendar</span><button class="close-btn" onclick="togglePopup('cal-pop')">&times;</button></div>
-        <div class="cal-nav">
-            <button onclick="moveMonth(-1)">&lt;</button>
-            <h4 id="month-name"></h4>
-            <button onclick="moveMonth(1)">&gt;</button>
-        </div>
-        <div id="calendar-days" class="days-grid"></div>
-        <div class="event-form">
-            <input type="text" id="event-input" placeholder="Type event...">
-            <button onclick="saveEvent()">Pin</button>
-        </div>
-    </div>
+<div class="file-section">
 
-    <div id="weather-pop" class="popup glass-card">
-        <div class="popup-header"><span>Vitoria-Gasteiz</span><button class="close-btn" onclick="togglePopup('weather-pop')">&times;</button></div>
-        <iframe src="https://www.aemet.es" width="100%" height="220" style="border-radius:10px; border:none;"></iframe>
-    </div>
+<h2>File Upload & Preview</h2>
 
-    <script src="script.js"></script>
+<input type="file" id="fileUpload" multiple>
+
+<div id="filePreview"></div>
+
+<div class="gdocs">
+<h3>Add Google Doc / Slides link</h3>
+<input type="text" id="gdocLink" placeholder="Paste Google Docs / Slides link">
+<button id="addGdoc">Add</button>
+<div id="gdocContainer"></div>
+</div>
+
+</div>
+
+</main>
+
+<!-- CLOCK POPUP -->
+
+<div class="popup" id="clockPopup">
+
+<h2>Clock</h2>
+
+<div id="digitalClock"></div>
+
+<canvas id="analogClock" width="200" height="200"></canvas>
+
+<button class="close">Close</button>
+
+</div>
+
+<!-- CALENDAR POPUP -->
+
+<div class="popup" id="calendarPopup">
+
+<h2>Calendar</h2>
+
+<div id="calendar"></div>
+
+<input type="date" id="eventDate">
+<input type="text" id="eventText" placeholder="Event name">
+<button id="addEvent">Add Event</button>
+
+<ul id="eventList"></ul>
+
+<button class="close">Close</button>
+
+</div>
+
+<!-- WEATHER POPUP -->
+
+<div class="popup" id="weatherPopup">
+
+<h2>Weather - Vitoria-Gasteiz</h2>
+
+<div id="weather"></div>
+
+<button class="close">Close</button>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
