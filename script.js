@@ -1,32 +1,48 @@
-// THEME
+// WINDOW OPENING
 
-const toggle=document.getElementById("themeToggle")
+function toggleWindow(id){
 
-toggle.onclick=()=>{
+const win=document.getElementById(id)
 
-document.body.classList.toggle("dark")
-
-}
-
-// BACKGROUND
-
-const bgUpload=document.getElementById("bgUpload")
-
-bgUpload.onchange=e=>{
-
-const file=e.target.files[0]
-
-const reader=new FileReader()
-
-reader.onload=()=>{
-
-document.body.style.backgroundImage=`url(${reader.result})`
+win.style.display= win.style.display==="block" ? "none":"block"
 
 }
 
-reader.readAsDataURL(file)
+document.getElementById("openCalendar").onclick=()=>toggleWindow("calendarWindow")
+
+document.getElementById("openFiles").onclick=()=>toggleWindow("fileWindow")
+
+document.getElementById("openSettings").onclick=()=>toggleWindow("settingsWindow")
+
+// DRAG WINDOWS
+
+document.querySelectorAll(".window").forEach(win=>{
+
+const bar=win.querySelector(".titleBar")
+
+let offsetX,offsetY
+
+bar.onmousedown=e=>{
+
+offsetX=e.clientX-win.offsetLeft
+offsetY=e.clientY-win.offsetTop
+
+document.onmousemove=e2=>{
+
+win.style.left=e2.clientX-offsetX+"px"
+win.style.top=e2.clientY-offsetY+"px"
 
 }
+
+document.onmouseup=()=>{
+
+document.onmousemove=null
+
+}
+
+}
+
+})
 
 // CLOCK
 
@@ -35,7 +51,6 @@ function updateClock(){
 const now=new Date()
 
 document.getElementById("digitalClock").textContent=
-
 now.toLocaleTimeString()
 
 }
@@ -43,7 +58,6 @@ now.toLocaleTimeString()
 setInterval(updateClock,1000)
 
 const canvas=document.getElementById("clockCanvas")
-
 const ctx=canvas.getContext("2d")
 
 function drawClock(){
@@ -54,62 +68,33 @@ const sec=now.getSeconds()
 const min=now.getMinutes()
 const hr=now.getHours()
 
-ctx.clearRect(0,0,200,200)
+ctx.clearRect(0,0,220,220)
 
 ctx.beginPath()
-ctx.arc(100,100,90,0,Math.PI*2)
+ctx.arc(110,110,100,0,Math.PI*2)
 ctx.stroke()
 
 function hand(angle,length){
 
 ctx.beginPath()
-ctx.moveTo(100,100)
+ctx.moveTo(110,110)
+
 ctx.lineTo(
-100+length*Math.sin(angle),
-100-length*Math.cos(angle)
+110+length*Math.sin(angle),
+110-length*Math.cos(angle)
 )
+
 ctx.stroke()
 
 }
 
-hand(hr*Math.PI/6,50)
-hand(min*Math.PI/30,70)
-hand(sec*Math.PI/30,80)
+hand(hr*Math.PI/6,60)
+hand(min*Math.PI/30,80)
+hand(sec*Math.PI/30,90)
 
 }
 
 setInterval(drawClock,1000)
-
-// WEATHER
-
-async function loadWeather(){
-
-const url="https://api.open-meteo.com/v1/forecast?latitude=42.8467&longitude=-2.6716&daily=temperature_2m_max&timezone=auto"
-
-const res=await fetch(url)
-const data=await res.json()
-
-const container=document.getElementById("weather")
-
-for(let i=0;i<7;i++){
-
-const el=document.createElement("div")
-
-el.className="weatherDay"
-
-el.innerHTML=`
-${data.daily.time[i]}
-<br>
-${data.daily.temperature_2m_max[i]}°C
-`
-
-container.appendChild(el)
-
-}
-
-}
-
-loadWeather()
 
 // CALENDAR
 
@@ -119,9 +104,9 @@ let events=JSON.parse(localStorage.getItem("events")||"{}")
 
 function renderCalendar(){
 
-const calendar=document.getElementById("calendar")
+const cal=document.getElementById("calendar")
 
-calendar.innerHTML=""
+cal.innerHTML=""
 
 const month=current.getMonth()
 const year=current.getFullYear()
@@ -129,11 +114,11 @@ const year=current.getFullYear()
 document.getElementById("monthYear").textContent=
 current.toLocaleString("default",{month:"long",year:"numeric"})
 
-const firstDay=new Date(year,month,1).getDay()
+const first=new Date(year,month,1).getDay()
 
 const days=new Date(year,month+1,0).getDate()
 
-for(let i=0;i<firstDay;i++) calendar.innerHTML+="<div></div>"
+for(let i=0;i<first;i++) cal.innerHTML+="<div></div>"
 
 for(let d=1;d<=days;d++){
 
@@ -143,27 +128,24 @@ cell.className="day"
 
 cell.textContent=d
 
-const key=`${year}-${month+1}-${d}`
+const dateKey=`${year}-${month+1}-${d}`
 
-if(events[key]){
+if(events[dateKey]){
 
 cell.classList.add("event")
-
-cell.title=events[key]
+cell.title=events[dateKey]
 
 }
 
 const today=new Date()
 
-if(
-d===today.getDate() &&
-month===today.getMonth() &&
-year===today.getFullYear()
-){
+if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear()){
+
 cell.classList.add("today")
+
 }
 
-calendar.appendChild(cell)
+cal.appendChild(cell)
 
 }
 
@@ -172,13 +154,19 @@ calendar.appendChild(cell)
 renderCalendar()
 
 document.getElementById("prevMonth").onclick=()=>{
+
 current.setMonth(current.getMonth()-1)
+
 renderCalendar()
+
 }
 
 document.getElementById("nextMonth").onclick=()=>{
+
 current.setMonth(current.getMonth()+1)
+
 renderCalendar()
+
 }
 
 document.getElementById("addEvent").onclick=()=>{
@@ -216,6 +204,7 @@ card.innerHTML=`<p>📄</p><p>${name}</p>`
 }
 
 const btn=document.createElement("button")
+
 btn.textContent="Open"
 
 btn.onclick=()=>window.open(url)
@@ -264,8 +253,32 @@ const iframe=document.createElement("iframe")
 
 iframe.src=link
 iframe.width="100%"
-iframe.height="350"
+iframe.height="300"
 
 document.getElementById("docViewer").appendChild(iframe)
+
+}
+
+// SETTINGS
+
+document.getElementById("themeToggle").onclick=()=>{
+
+document.body.classList.toggle("dark")
+
+}
+
+document.getElementById("bgUpload").onchange=e=>{
+
+const file=e.target.files[0]
+
+const reader=new FileReader()
+
+reader.onload=()=>{
+
+document.body.style.backgroundImage=`url(${reader.result})`
+
+}
+
+reader.readAsDataURL(file)
 
 }
