@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate Dashboard</title>
+<title>Working Dashboard</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-  <h1>Ultimate Dashboard</h1>
+  <h1>Dashboard</h1>
   <div class="topButtons">
     <button id="openCalendar">Calendar</button>
     <button id="openFiles">Files</button>
@@ -23,7 +23,7 @@
   <div id="digitalClock"></div>
 </div>
 
-<!-- CALENDAR WINDOW -->
+<!-- Calendar Window -->
 <div class="window" id="calendarWindow">
   <div class="titleBar">Calendar</div>
   <div class="calendarNav">
@@ -35,23 +35,23 @@
   <div class="eventPanel">
     <input type="date" id="eventDate">
     <input type="text" id="eventText" placeholder="Event name">
-    <button id="addEvent">Add</button>
+    <button id="addEvent">Add Event</button>
   </div>
 </div>
 
-<!-- FILE WINDOW -->
+<!-- File Manager Window -->
 <div class="window" id="fileWindow">
-  <div class="titleBar">File Explorer</div>
+  <div class="titleBar">File Manager</div>
   <div id="dropZone">Drop files here</div>
   <input type="file" id="fileUpload" multiple>
   <div id="filePreview"></div>
-  <h3>Add document link</h3>
-  <input id="docLink" placeholder="Paste Google/Office link">
+  <h3>Add Document Link</h3>
+  <input type="text" id="docLink" placeholder="Paste Google/Office link">
   <button id="addDoc">Add</button>
   <div id="docViewer"></div>
 </div>
 
-<!-- NOTES WINDOW -->
+<!-- Notes Window -->
 <div class="window" id="notesWindow">
   <div class="titleBar">Notes / Tasks</div>
   <textarea id="noteText" placeholder="Write your notes/tasks..."></textarea>
@@ -59,7 +59,7 @@
   <div id="noteList"></div>
 </div>
 
-<!-- SETTINGS WINDOW -->
+<!-- Settings Window -->
 <div class="window" id="settingsWindow">
   <div class="titleBar">Settings</div>
   <h3>Theme</h3>
@@ -73,6 +73,7 @@
   <button id="dockCalendar">Calendar</button>
   <button id="dockFiles">Files</button>
   <button id="dockNotes">Notes</button>
+  <button id="dockSettings">Settings</button>
 </div>
 
 <script src="script.js"></script>
